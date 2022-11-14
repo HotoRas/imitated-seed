@@ -4254,6 +4254,12 @@ and limitations under the License.
 			<label><input ${req.method == 'POST' ? 'checked ' : ''}type="checkbox" name="agree" id="agreeCheckbox" value="Y">&nbsp;${config.getString('wiki.editagree_text', `문서 편집을 <strong>저장</strong>하면 당신은 기여한 내용을 <strong>CC-BY-NC-SA 2.0 KR</strong>으로 배포하고 기여한 문서에 대한 하이퍼링크나 URL을 이용하여 저작자 표시를 하는 것으로 충분하다는 데 동의하는 것입니다. 이 <strong>동의는 철회할 수 없습니다.</strong>`)}</strong></label>
 			
 			${islogin(req) ? '' : `<p style="font-weight: bold;">비로그인 상태로 편집합니다. 편집 역사에 IP(${ip_check(req)})가 영구히 기록됩니다.</p>`}
+
+			${hostconfig.namuwiki_exclusive /*imported from https://github.com/poiega/PoipoEngine/commit/627f43f9edcd61e7e6c7248ee85b570a0551b0d5 @ L4208*/ ? `
+			${config.getString('wiki.editrequestnoti_text', `
+			<span data-v-editpost"">편집 요청은 편집 권한이 있는 사용자가 승인할 수 있습니다. 편집 권한이 있는 사용자가 확인 할 수 있도록 편집 내용을 뒷받침할 수 있는 출처 또는 근거를 타 사용자가 확인 가능하도록 편집 요약에 입력해 주세요.<br>
+			<span style="color: red; text-decoration: underline; font-weight: bold;">정당한 사유가 기재되지 않은 편집 요청에 대해서 관리자 직권으로 닫기 처리</span>할 수 있으므로, 편집 요청 시에는 편집 요약을 통해 근거를 포함하시는 것을 강력하게 권장합니다.</span>`
+		)}` : ''}
 			
 			${generateCaptcha(req, req.session.captcha)}
 			
