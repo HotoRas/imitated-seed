@@ -571,6 +571,8 @@ try {
 	if (minor < 20) perms = perms.filter(item => !['api_access'].includes(item));
 	if (!(minor > 0 || (minor == 0 && revision >= 20))) perms = perms.concat(['developer', 'tribune', 'arbiter']);
 	if (hostconfig.debug) perms.push('debug');
+
+	if (hostconfig.wiki_name) wikiconfig['wiki_name'] = hostconfig.wiki_name; // 재시작때마다 위키 기본 이름이 날라가는 문제 수정
 } catch (e) {
 	(async function () {
 		print('병아리 - the seed 모방 엔진에 오신것을 환영합니다.\n');
@@ -585,61 +587,18 @@ try {
 				search_host: '127.5.5.5',
 				search_port: '25005',
 				owners: [input('소유자 닉네임: ')],
+				wiki_name: [input('위키 기본 이름: ')],
 			};
-		/*
-		const frfl = [
-			'js/theseed.js', 'js/jquery-2.1.4.min.js', 'js/jquery-1.11.3.min.js', 
-			'js/intersection-observer.js', 'js/dateformatter.js',
-			
-			'css/wiki.css', 'css/diffview.css', 'css/katex.min.css',
-		];
-		const skidx = {
-			buma: 'https://github.com/LiteHell/theseed-skin-buma/archive/d77eef50a77007da391c5082b4b94818db372417.zip',
-			liberty: 'https://github.com/namu-theseed/theseed-skin-liberty/archive/153cf78f70206643ec42e856aff8280dc21eb2c0.zip',
-			vector: 'https://github.com/LiteHell/theseed-skin-vector/archive/51fd9afdd8000dafafd2600313e8e03df1f7fdcb.zip',
-			namuvector: 'https://github.com/LiteHell/theseed-skin-namuvector/archive/690288e719bfe7e4abced3dc715104dd80e8f1ff.zip',
-			marble: 'https://github.com/foxtrot-99/theseed-skin-marble/archive/refs/heads/master.zip',
-		};
-		function download(path) {
-			return new Promise((resolve, reject) => {
-				https.get({
-					host: 'theseed.io',
-					path: '/' + path,
-				}, res => {
-					const d = [];
-					res.on('data', chunk => d.push(chunk));
-					res.on('end', () => {
-						var ret = Buffer.from('');
-						ret = Buffer.concat([ret, Buffer.concat(d)]);
-						fs.writeFileS
-					});
-				});
-			});
-		}
-		if((hostconfig.uninitialized !== undefined && hostconfig.download_files) || hostconfig.uninitialized === undefined) {
-			var chk = null;
-			for(var f of frfl) {
-				if(!fs.existsSync(f)) {
-					chk = f;
-					break;
-				}
-			}
-			if(chk) {
-				if(hostconfig.uninitialized !== undefined || (hostconfig.uninitialized === undefined && input(f + ' 파일이 없습니다. 이것은 위키 실행을 위해 필요합니다. theseed.io에서 자동으로 다운로드하시겠습니까? [Y/N]: ').toLowerCase() == 'Y')) {
-					var dodn = 1;
-				}
-			}
-			if(dodn) {
-				
-			}
-		}
-		*/
+
+		// 자동 다운로드 코드 삭제 (미사용)
+
 		hostconfig.uninitialized = false;
 
 		// 만들 테이블
 		const tables = {
 			'documents': ['title', 'content', 'namespace', 'time'],
-			'history': ['title', 'namespace', 'content', 'rev', 'time', 'username', 'changes', 'log', 'iserq', 'erqnum', 'advance', 'ismember', 'edit_request_id', 'flags', 'isapi'],
+			'history': ['title', 'namespace', 'content', 'rev', 'time', 'username', 'changes', 'log', 'iserq', 'erqnum', 'advance',
+				'ismember', 'edit_request_id', 'flags', 'isapi'],
 			'namespaces': ['namespace', 'locked', 'norecent', 'file'],
 			'users': ['username', 'password'],
 			'user_settings': ['username', 'key', 'value'],
@@ -659,7 +618,8 @@ try {
 			'aclgroup_groups': ['name', 'admin', 'date', 'lastupdate', 'css', 'warning_description'],
 			'aclgroup': ['aclgroup', 'type', 'username', 'note', 'date', 'expiration', 'id'],
 			'block_history': ['date', 'type', 'aclgroup', 'id', 'duration', 'note', 'executer', 'target', 'ismember', 'logid'],
-			'edit_requests': ['title', 'namespace', 'id', 'deleted', 'state', 'content', 'baserev', 'username', 'ismember', 'log', 'date', 'processor', 'processortype', 'lastupdate', 'processtime', 'reason', 'rev'],
+			'edit_requests': ['title', 'namespace', 'id', 'deleted', 'state', 'content', 'baserev', 'username', 'ismember', 'log',
+				'date', 'processor', 'processortype', 'lastupdate', 'processtime', 'reason', 'rev'],
 			'files': ['title', 'namespace', 'hash'],
 			'backlink': ['title', 'namespace', 'link', 'linkns', 'type', 'exist'],
 			'classic_acl': ['title', 'namespace', 'blockkorea', 'blockbot', 'read', 'edit', 'del', 'discuss', 'move'],
