@@ -4209,6 +4209,12 @@ and limitations under the License.
 			
 			${islogin(req) ? '' : `<p style="font-weight: bold;">비로그인 상태로 편집합니다. 편집 역사에 IP(${ip_check(req)})가 영구히 기록됩니다.</p>`}
 			
+			${hostconfig.namuwiki_exclusive /*imported from https://github.com/poiega/PoipoEngine/commit/627f43f9edcd61e7e6c7248ee85b570a0551b0d5 @ L4208*/ ? `
+			${config.getString('wiki.editrequestnoti_text', `
+			<span data-v-editpost"">편집 요청은 편집 권한이 있는 사용자가 승인할 수 있습니다. 편집 권한이 있는 사용자가 확인 할 수 있도록 편집 내용을 뒷받침할 수 있는 출처 또는 근거를 타 사용자가 확인 가능하도록 편집 요약에 입력해 주세요.<br>
+			<span style="color: red; text-decoration: underline; font-weight: bold;">정당한 사유가 기재되지 않은 편집 요청에 대해서 관리자 직권으로 닫기 처리</span>할 수 있으므로, 편집 요청 시에는 편집 요약을 통해 근거를 포함하시는 것을 강력하게 권장합니다.</span>`
+					   ): '' }
+			
 			<div class="btns">
 				<button id="editBtn" class="btn btn-primary" style="width: 100px;">저장</button>
 			</div>
@@ -8350,7 +8356,7 @@ and limitations under the License.
 					curs.execute("insert into email_filters (address) values (?)", [f]);
 				}
 			}
-			for (var item of ['wiki.site_name', 'wiki.front_page', 'wiki.default_skin', 'filters', 'wiki.sitenotice', 'wiki.editagree_text', 'wiki.canonical_url', 'wiki.copyright_url', 'wiki.copyright_text', 'wiki.footer_text', 'wiki.logo_url']) {
+			for (var item of ['wiki.site_name', 'wiki.front_page', 'wiki.default_skin', 'filters', 'wiki.sitenotice', 'wiki.editagree_text', 'wiki.canonical_url', 'wiki.copyright_url', 'wiki.copyright_text', 'wiki.footer_text', 'wiki.editrequestnoti_text', 'wiki.logo_url']) {
 				wikiconfig[item] = req.body[item];
 				await curs.execute("delete from config where key = ?", [item]);
 				await curs.execute("insert into config (key, value) values (?, ?)", [item, wikiconfig[item]]);
