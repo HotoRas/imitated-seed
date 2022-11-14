@@ -4213,7 +4213,7 @@ and limitations under the License.
 			${config.getString('wiki.editrequestnoti_text', `
 			<span data-v-editpost"">편집 요청은 편집 권한이 있는 사용자가 승인할 수 있습니다. 편집 권한이 있는 사용자가 확인 할 수 있도록 편집 내용을 뒷받침할 수 있는 출처 또는 근거를 타 사용자가 확인 가능하도록 편집 요약에 입력해 주세요.<br>
 			<span style="color: red; text-decoration: underline; font-weight: bold;">정당한 사유가 기재되지 않은 편집 요청에 대해서 관리자 직권으로 닫기 처리</span>할 수 있으므로, 편집 요청 시에는 편집 요약을 통해 근거를 포함하시는 것을 강력하게 권장합니다.</span>`
-					   ): '' }
+		)}` : ''}
 			
 			<div class="btns">
 				<button id="editBtn" class="btn btn-primary" style="width: 100px;">저장</button>
